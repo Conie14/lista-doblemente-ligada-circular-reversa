@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        class Nodo {
+            constructor(dato, next = null) {
+            this.dato = dato;
+            this.next = next;
+            }
+        }
+
+        class LinkedList {
+            constructor() {
+                this.cabecera = null;
+                this.tam = 0;
+            }
+            
+            insertarprimero(dato = null) {
+                // hacer que el nuevo encabezado apunte al encabezado anterior
+                this.cabecera = new Nodo(dato, this.cabecera);
+                this.tam ++;
+            }
+            
+            insertaranterior(dato = null) { // insertar el último al principio será el primero en la lista enlazada
+                const nodo = new Nodo(dato);
+                // Si está vacía se inserta el primero
+                if (!this.cabecera) this.insertarprimero(dato);
+                else {
+                    let current = this.cabecera;
+                    // mientras que next no es nulo, continuamos
+                    while (current.next) 
+                        current = current.next;
+                    // finalmente next es nulo, queremos establecer next aquí para el nodo que queremos agregar
+                    current.next = nodo;
+                }
+                this.tam ++;
+            }
+            
+            // imprimimos la lista
+            print() {
+                let current = this.cabecera;
+                let output = "";
+                while (current) { // mientras actual no es nulo, eventualmente será nulo
+                    output += current.dato + " - ";
+                    current = current.next; // pasamos al siguiente nodo
+                }
+                output += " final"; // cuando current es nulo, significa que hemos llegado al final de la lista
+                console.log(output);
+                return output;
+            }
+            
+            reversa() {
+                if (!this.cabecera) return; // si no se tine el inico termina el programa
+                let current = this.cabecera;
+                const linkedList = new LinkedList(); // creamos la lista
+                
+                while (current) { 
+                    linkedList.insertarprimero(current.dato); // insertar primero ete será el final de la lista enlazada 
+                    current = current.next;
+                }
+                // asigna el encabezado actual al encabezado de la lista con enlace hacia atras
+                this.cabecera = linkedList.cabecera;
+            }
+        }
+
+        const linkedList = new LinkedList();
+
+        linkedList.insertaranterior(1);
+        linkedList.insertaranterior(2);
+        linkedList.insertaranterior(3);
+        linkedList.insertaranterior(4);
+
+        //se imprimen resultados 
+        const bodyElement = document.getElementsByTagName("body")[0];
+        bodyElement.innerHTML = `<p>lista circular inicial: <b>${linkedList.print()}</b></p>`; 
+        linkedList.reversa();
+        bodyElement.innerHTML += `<p>lista en reversa: <b>${linkedList.print()}</b></p>`; 
+    </script>
+</body>
+</html>
